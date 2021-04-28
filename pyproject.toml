@@ -8,6 +8,9 @@ authors = ["ujiuji1259 <suzzz428@gmail.com>"]
 python = "^3.9"
 simstring-pure = "^1.0.0"
 mecab-python3 = "^1.0.3"
+requests = "^2.25.1"
+sklearn = "^0.0"
+tqdm = "^4.60.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.3"
