@@ -9,10 +9,10 @@ class DictEntry:
     """Entry of manbyo dictionary
 
     attributes:
-        name: surface form of the disease
-        icd: icd-10 code
-        norm: normalized form of the disease
-        level: confidence level in the manbyo dictionary
+        name str: surface form of the disease
+        icd str: icd-10 code
+        norm str: normalized form of the disease
+        level str: confidence level in the manbyo dictionary
     """
     name: str
     icd: str
@@ -23,10 +23,10 @@ def load_dict(path):
     """Load manbyo dictionary
 
     args:
-        path: str
+        path str: path of the manbyo dictionary
 
     return:
-        data: List[DictEntry]
+        data List[DictEntry]: disease list in the manbyo dictionary
     """
     data = []
     with open(path, 'r') as f:
