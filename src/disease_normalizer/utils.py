@@ -2,6 +2,8 @@
 """
 
 import csv
+import shutil
+import requests
 from dataclasses import dataclass
 
 @dataclass
@@ -34,3 +36,15 @@ def load_dict(path):
         for row in reader:
             data.append(DictEntry(*row))
     return data
+
+def download_fileobj(src, dst, binary=False):
+    """Download files from url
+
+    Args:
+        src str: url from which you want to download
+        dst str: path where you save the file
+        binary bool: whether the file is binary or not
+    """
+    res = requests.get(src, stream=True)
+    with open(dst, "wb") as f:
+        shutil.copyfileobj(res.raw, f)
