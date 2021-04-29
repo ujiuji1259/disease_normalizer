@@ -10,6 +10,7 @@ class Normalizer(object):
     def __init__(self, preprocessor, converter):
         self.load_manbyo_dict()
 
+        # load converter
         if isinstance(converter, str):
             if converter == "exact":
                 self.converter = exact_matcher.ExactMatchConverter(self.manbyo_dict)
