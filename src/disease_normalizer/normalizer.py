@@ -1,8 +1,9 @@
 import os
+from pathlib import Path
 
 from . import utils
 from .converter import dnorm, exact_matcher, fuzzy_matcher
-from .base_converter import BaseConverter
+from .converter.base_converter import BaseConverter
 
 BASE_URL = "http://aoi.naist.jp/norm/MANBYO_SABC.csv"
 
