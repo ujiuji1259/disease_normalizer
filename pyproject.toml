@@ -11,9 +11,11 @@ mecab-python3 = "^1.0.3"
 requests = "^2.25.1"
 sklearn = "^0.0"
 tqdm = "^4.60.0"
+jaconv = "^0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.3"
+pytest-mock = "^3.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
