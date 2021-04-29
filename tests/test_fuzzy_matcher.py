@@ -10,6 +10,6 @@ from disease_normalizer.converter.fuzzy_matcher import FuzzyMatchConverter
 )
 def test_fuzzy_match(name, icd, norm, manbyo_dict):
     converter = FuzzyMatchConverter(manbyo_dict)
-    result = converter.convert(name)
+    result, sim = converter.convert(name)
     assert result.icd == icd, result.icd
     assert result.norm == norm, result.norm

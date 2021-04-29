@@ -27,4 +27,4 @@ class ExactMatchConverter(BaseConverter):
         Returns:
             DictEntry: normalized form of the input disease.
         """
-        return self.dict.get(word, utils.DictEntry(None, None, None, None))
+        return self.dict.get(word, utils.DictEntry(None, None, None, None)), 1

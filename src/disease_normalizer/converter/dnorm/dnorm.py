@@ -63,9 +63,9 @@ class DNorm(object):
 
     def predict(self, x, k=1):
         x = self.tfidf.transform(x)
-        sims = self.calc_score(x, self.norms_vec)
-        rank = sims.toarray().argsort(axis=1)[:, ::-1][:, :k]
-        return [[self.norms[r] for r in rr] for rr in rank]
+        sims = self.calc_score(x, self.norms_vec).toarray()
+        rank = sims.argsort(axis=1)[:, ::-1][:, :k]
+        return [[self.norms[r] for r in rr] for rr in rank], [sims[idx, rr] for idx, rr in enumerate(rank)]
 
     def train(self, X, Y, val_x, val_y, eta):
         val_score = [float("inf"), 1e10]

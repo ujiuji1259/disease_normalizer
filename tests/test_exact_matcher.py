@@ -8,6 +8,6 @@ from disease_normalizer.converter.exact_matcher import ExactMatchConverter
 )
 def test_exact_match(name, icd, norm, manbyo_dict):
     converter = ExactMatchConverter(manbyo_dict)
-    result = converter.convert(name)
+    result, sim = converter.convert(name)
     assert result.icd == icd
     assert result.norm == norm

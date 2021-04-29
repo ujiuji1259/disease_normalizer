@@ -34,7 +34,7 @@ def test_dnorm_match(name, icd, norm, manbyo_dict, tmpdir):
 
     converter = DNormConverter(manbyo_dict)
 
-    result = converter.convert(name)
+    result, sim = converter.convert(name)
 
     assert result.icd == icd
     assert result.norm == norm

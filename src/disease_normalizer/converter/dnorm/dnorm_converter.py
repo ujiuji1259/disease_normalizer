@@ -36,8 +36,9 @@ class DNormConverter(BaseConverter):
         Returns:
             DictEntry: DictEntry of normalized form of the disease
         """
-        result = self.model.predict([word], k=1)[0][0]
-        return self.dict[result]
+        result, sims = self.model.predict([word], k=1)
+        result, sims = result[0][0], sims[0][0]
+        return self.dict[result], sims
 
     def build_model(self, dictionary):
         """Build dnorm
