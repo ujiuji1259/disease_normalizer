@@ -12,9 +12,10 @@ from simstring.database.dict import DictDatabase
 from simstring.searcher import Searcher
 
 from .. import utils
+from .base_converter import BaseConverter
 
 
-class FuzzyMatchConverter(object):
+class FuzzyMatchConverter(BaseConverter):
     """Fuzzy Matcher
 
     args:

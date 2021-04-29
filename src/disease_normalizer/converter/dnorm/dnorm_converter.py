@@ -7,13 +7,13 @@ from pathlib import Path
 
 from .dnorm import DNorm
 from ... import utils
-
+from ..base_converter import BaseConverter
 
 
 BASE_URL = "http://aoi.naist.jp/DNorm/dnorm.pkl"
 
 
-class DNormConverter(object):
+class DNormConverter(BaseConverter):
     """DNorm converter
 
     Args:

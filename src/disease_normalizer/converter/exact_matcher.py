@@ -4,8 +4,9 @@ Convert disease using exact match.
 """
 import csv
 from .. import utils
+from .base_converter import BaseConverter
 
-class ExactMatchConverter(object):
+class ExactMatchConverter(BaseConverter):
     """ExactMatcher
 
     Args:
