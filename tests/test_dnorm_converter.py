@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from disease_normalizer.converter.dnorm.dnorm_converter import DNormConverter
+from japanese_disease_normalizer.converter.dnorm.dnorm_converter import DNormConverter
 
 def test_download_model(tmpdir, manbyo_dict, monkeypatch):
     base_dir = tmpdir.mkdir("dnorm")

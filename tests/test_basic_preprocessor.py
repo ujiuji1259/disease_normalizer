@@ -1,6 +1,6 @@
 import pytest
 
-from disease_normalizer.preprocessor.basic_preprocessor import (
+from japanese_disease_normalizer.preprocessor.basic_preprocessor import (
     IdenticalPreprocessor,
     FullWidthPreprocessor,
     NFKCPreprocessor,

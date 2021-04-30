@@ -1,5 +1,5 @@
 import pytest
-from disease_normalizer.utils import load_dict
+from japanese_disease_normalizer.utils import load_dict
 
 def test_load_dict():
     dict_entries = load_dict("tests/sample_dict.csv")

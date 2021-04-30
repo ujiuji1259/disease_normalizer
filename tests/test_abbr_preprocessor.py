@@ -2,7 +2,7 @@
 import os
 
 import pytest
-from disease_normalizer.preprocessor.abbr_preprocessor import AbbrPreprocessor, AbbrEntry
+from japanese_disease_normalizer.preprocessor.abbr_preprocessor import AbbrPreprocessor, AbbrEntry
 
 def test_download_abbr_dict(tmpdir, monkeypatch):
     base_dir = tmpdir.mkdir("norm")

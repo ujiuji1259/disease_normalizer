@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "disease_normalizer"
+name = "japanese_disease_normalizer"
 version = "0.1.0"
 description = ""
 authors = ["ujiuji1259 <suzzz428@gmail.com>"]

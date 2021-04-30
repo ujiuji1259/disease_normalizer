@@ -1,15 +1,15 @@
 import os
 
 import pytest
-from disease_normalizer.normalizer import Normalizer
-from disease_normalizer.converter import exact_matcher, fuzzy_matcher, dnorm
-from disease_normalizer.converter.base_converter import BaseConverter
-from disease_normalizer.utils import DictEntry
-from disease_normalizer.preprocessor.basic_preprocessor import (
+from japanese_disease_normalizer.normalizer import Normalizer
+from japanese_disease_normalizer.converter import exact_matcher, fuzzy_matcher, dnorm
+from japanese_disease_normalizer.converter.base_converter import BaseConverter
+from japanese_disease_normalizer.utils import DictEntry
+from japanese_disease_normalizer.preprocessor.basic_preprocessor import (
     FullWidthPreprocessor,
     NFKCPreprocessor,
 )
-from disease_normalizer.preprocessor.pipeline import PreprocessorPipeline
+from japanese_disease_normalizer.preprocessor.pipeline import PreprocessorPipeline
 
 def test_download_manbyo(tmpdir):
     base_dir = tmpdir.mkdir("norm")

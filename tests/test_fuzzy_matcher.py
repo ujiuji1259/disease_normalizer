@@ -1,5 +1,5 @@
 import pytest
-from disease_normalizer.converter.fuzzy_matcher import FuzzyMatchConverter
+from japanese_disease_normalizer.converter.fuzzy_matcher import FuzzyMatchConverter
 
 @pytest.mark.parametrize(
     "name, icd, norm", [

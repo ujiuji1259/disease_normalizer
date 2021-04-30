@@ -1,12 +1,12 @@
 import pytest
 
-from disease_normalizer.preprocessor.basic_preprocessor import BasePreprocessor
-from disease_normalizer.preprocessor.basic_preprocessor import (
+from japanese_disease_normalizer.preprocessor.basic_preprocessor import BasePreprocessor
+from japanese_disease_normalizer.preprocessor.basic_preprocessor import (
     FullWidthPreprocessor,
     NFKCPreprocessor,
     IdenticalPreprocessor
 )
-from disease_normalizer.preprocessor.pipeline import PreprocessorPipeline
+from japanese_disease_normalizer.preprocessor.pipeline import PreprocessorPipeline
 
 @pytest.mark.parametrize(
     "pipelines, models", [

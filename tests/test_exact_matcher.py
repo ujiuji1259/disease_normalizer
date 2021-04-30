@@ -1,5 +1,5 @@
 import pytest
-from disease_normalizer.converter.exact_matcher import ExactMatchConverter
+from japanese_disease_normalizer.converter.exact_matcher import ExactMatchConverter
 
 @pytest.mark.parametrize(
     "name, icd, norm", [
