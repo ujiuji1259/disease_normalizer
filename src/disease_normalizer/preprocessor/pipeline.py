@@ -1,4 +1,5 @@
 from .base_preprocessor import BasePreprocessor
+from .abbr_preprocessor import AbbrPreprocessor
 from .basic_preprocessor import (
     IdenticalPreprocessor,
     FullWidthPreprocessor,
@@ -19,6 +20,8 @@ class PreprocessorPipeline(object):
                     self.pipelines.append(FullWidthPreprocessor())
                 elif preprocessor == "NFKC":
                     self.pipelines.append(NFKCPreprocessor())
+                elif preprocessor == "abbr":
+                    self.pipelines.append(AbbrPreprocessor())
                 else:
                     assert NotImplementedError, "If you want to use pre-defined preprocessor, please select one from (identical|fullwidth|NFKC)"
             else:

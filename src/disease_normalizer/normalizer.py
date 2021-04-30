@@ -16,6 +16,8 @@ class Normalizer(object):
         elif isinstance(preprocess_pipeline, str):
             if preprocess_pipeline == "basic":
                 self.preprocessor = PreprocessorPipeline(["NFKC", "fullwidth"])
+            if preprocess_pipeline == "abbr":
+                self.preprocessor = PreprocessorPipeline(["abbr", "NFKC", "fullwidth"])
             else:
                 assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own converter inheriting BaseConverter"
         else:

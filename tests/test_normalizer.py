@@ -86,7 +86,21 @@ def test_load_own_pipeline(mocker):
         ("2型糖尿病", "exact", "basic", DictEntry("２型糖尿病", "E11", "２型糖尿病", "S"))
     ]
 )
-def test_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
+def test_basic_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
+    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
+
+    target_model = Normalizer(preprocessor_name, converter_name)
+    result = target_model.normalize(input)
+    assert result.icd == output.icd
+    assert result.norm == output.norm
+
+@pytest.mark.parametrize(
+    "input, converter_name, preprocessor_name, output", [
+        ("高K血症", "exact", "basic", DictEntry(None, None, None, None)),
+        ("高K血症", "exact", "abbr", DictEntry("高カリウム血症", "E875", "高カリウム血症", "S"))
+    ]
+)
+def test_abbr_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
     mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
 
     target_model = Normalizer(preprocessor_name, converter_name)
