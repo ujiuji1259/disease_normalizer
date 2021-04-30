@@ -6,7 +6,8 @@ import os
 from pathlib import Path
 
 from . import utils
-from .converter import dnorm, exact_matcher, fuzzy_matcher
+from .converter import exact_matcher, fuzzy_matcher
+from .converter.dnorm import dnorm_converter
 from .converter.base_converter import BaseConverter
 from .preprocessor.pipeline import PreprocessorPipeline
 
@@ -26,12 +27,12 @@ class Normalizer(object):
         elif isinstance(preprocess_pipeline, str):
             if preprocess_pipeline == "basic":
                 self.preprocessor = PreprocessorPipeline(["NFKC", "fullwidth"])
-            if preprocess_pipeline == "abbr":
+            elif preprocess_pipeline == "abbr":
                 self.preprocessor = PreprocessorPipeline(["abbr", "NFKC", "fullwidth"])
             else:
-                assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own converter inheriting BaseConverter"
+                raise NotImplementedError("Please specify converter by selecting (basic) or creating your own converter inheriting BaseConverter")
         else:
-            assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own preprocess pipeline instance"
+            raise NotImplementedError("Please specify converter by selecting (basic) or creating your own preprocess pipeline instance")
 
         self.manbyo_dict = self.load_manbyo_dict()
         for entry in self.manbyo_dict:
@@ -45,14 +46,13 @@ class Normalizer(object):
             elif converter == "fuzzy":
                 self.converter = fuzzy_matcher.FuzzyMatchConverter(self.manbyo_dict)
             elif converter == "dnorm":
-                self.converter = dnorm.dnorm_converter.DNormConverter(self.manbyo_dict)
-            assert NotImplementedError, "Please specify converter by selecting (exact|fuzzy|dnorm)"
+                self.converter = dnorm_converter.DNormConverter(self.manbyo_dict)
+            else:
+                raise NotImplementedError("Please specify converter by selecting (exact|fuzzy|dnorm)")
         elif isinstance(converter, BaseConverter):
             self.converter = converter
         else:
-            assert NotImplementedError, "Please specify converter by selecting (exact|fuzzy|dnorm) or creating your own converter inheriting BaseConverter"
-
-
+            raise NotImplementedError("Please specify converter by selecting (exact|fuzzy|dnorm) or creating your own converter inheriting BaseConverter")
 
     def load_manbyo_dict(self):
         """Load manbyo dict
@@ -71,7 +71,6 @@ class Normalizer(object):
 
         manbyo_dict = utils.load_dict(DEFAULT_MANBYO_PATH / "MANBYO_SABC.csv")
         return manbyo_dict
-
 
     def normalize(self, word):
         """Normalize disease name

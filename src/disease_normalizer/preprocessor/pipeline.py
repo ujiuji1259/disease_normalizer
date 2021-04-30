@@ -36,9 +36,9 @@ class PreprocessorPipeline(object):
                 elif preprocessor == "abbr":
                     self.pipelines.append(AbbrPreprocessor())
                 else:
-                    assert NotImplementedError, "If you want to use pre-defined preprocessor, please select one from (identical|fullwidth|NFKC)"
+                    raise NotImplementedError("If you want to use pre-defined preprocessor, please select one from (identical|fullwidth|NFKC)")
             else:
-                assert NotImplementedError, "Please specify str or BasePreprocessor instance"
+                raise NotImplementedError("Please specify str or BasePreprocessor instance")
 
     def preprocess(self, word):
         """Perform all preprocess

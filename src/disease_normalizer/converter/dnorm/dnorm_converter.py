@@ -49,7 +49,6 @@ class DNormConverter(BaseConverter):
 
         Args:
             dictionary List[DictEntry]: manbyo dictionary
-
         """
         DEFAULT_CACHE_PATH = os.getenv("DEFAULT_CACHE_PATH", "~/.cache")
         DEFAULT_DNORM_PATH = Path(os.path.expanduser(

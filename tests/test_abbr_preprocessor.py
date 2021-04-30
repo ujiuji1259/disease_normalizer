@@ -4,9 +4,9 @@ import os
 import pytest
 from disease_normalizer.preprocessor.abbr_preprocessor import AbbrPreprocessor, AbbrEntry
 
-def test_download_abbr_dict(tmpdir):
+def test_download_abbr_dict(tmpdir, monkeypatch):
     base_dir = tmpdir.mkdir("norm")
-    os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
+    monkeypatch.setenv("DEFAULT_CACHE_PATH", str(base_dir))
 
     model = AbbrPreprocessor()
     assert (base_dir / "norm" / "abb_dict.json").exists()
@@ -14,9 +14,9 @@ def test_download_abbr_dict(tmpdir):
     assert isinstance(model.abbr_dict[list(model.abbr_dict.keys())[0]], list)
     assert isinstance(model.abbr_dict[list(model.abbr_dict.keys())[0]][0], AbbrEntry)
 
-def test_load_abbr_already_downloaded(tmpdir, manbyo_dict):
+def test_load_abbr_already_downloaded(tmpdir, manbyo_dict, monkeypatch):
     base_dir = tmpdir.mkdir("norm")
-    os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
+    monkeypatch.setenv("DEFAULT_CACHE_PATH", str(base_dir))
 
     model = AbbrPreprocessor()
     model = AbbrPreprocessor()
@@ -39,9 +39,9 @@ def test_load_abbr_already_downloaded(tmpdir, manbyo_dict):
             "クレブシエラ属のACLなんじゃ", "クレブシエラ属の前十字靱帯なんじゃ", "クレブシエラ属のアルブミン カゼイン レシチンなんじゃ"])
     ]
 )
-def test_preprocess(input, outputs, tmpdir):
+def test_preprocess(input, outputs, tmpdir, monkeypatch):
     base_dir = tmpdir.mkdir("norm")
-    os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
+    monkeypatch.setenv("DEFAULT_CACHE_PATH", str(base_dir))
 
     model = AbbrPreprocessor()
     results = model.preprocess(input)

@@ -32,7 +32,6 @@ def test_manbyo_cache(tmpdir):
     ("exact", exact_matcher.ExactMatchConverter),
     ("fuzzy", fuzzy_matcher.FuzzyMatchConverter),
     ("dnorm", dnorm.dnorm_converter.DNormConverter),
-    ("おあいじょふぇ", dnorm.dnorm_converter.DNormConverter),
     ]
 )
 def test_load_model(name, model, mocker):
@@ -83,7 +82,9 @@ def test_load_own_pipeline(mocker):
 
 @pytest.mark.parametrize(
     "input, converter_name, preprocessor_name, output", [
-        ("2型糖尿病", "exact", "basic", DictEntry("２型糖尿病", "E11", "２型糖尿病", "S"))
+        ("2型糖尿病", "exact", "basic", DictEntry("２型糖尿病", "E11", "２型糖尿病", "S")),
+        ("2型糖尿病", "fuzzy", "basic", DictEntry("２型糖尿病", "E11", "２型糖尿病", "S")),
+        ("2型糖尿病", "dnorm", "basic", DictEntry("２型糖尿病", "E11", "２型糖尿病", "S")),
     ]
 )
 def test_basic_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
@@ -107,3 +108,22 @@ def test_abbr_normalize(input, converter_name, preprocessor_name, output, manbyo
     result = target_model.normalize(input)
     assert result.icd == output.icd
     assert result.norm == output.norm
+
+"""
+
+@pytest.mark.parametrize(
+    "preprocessor_name, converter_name", [
+    ("basic", "こんにちはーーーー"),
+    ("basic", None),
+    (None, "exact"),
+    ("わーーーーい", None),
+    ]
+)
+def test_invalid_args(preprocessor_name, converter_name, mocker):
+    mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
+    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
+
+    with pytest.raises(NotImplementedError):
+        target_model = Normalizer(preprocessor_name, converter_name)
+
+"""

@@ -3,18 +3,18 @@ import os
 import pytest
 from disease_normalizer.converter.dnorm.dnorm_converter import DNormConverter
 
-def test_download_model(tmpdir, manbyo_dict):
+def test_download_model(tmpdir, manbyo_dict, monkeypatch):
     base_dir = tmpdir.mkdir("dnorm")
-    os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
+    monkeypatch.setenv("DEFAULT_CACHE_PATH", str(base_dir))
 
     model = DNormConverter(manbyo_dict)
     assert (base_dir / "Dnorm" / "dnorm.pkl").exists()
     assert hasattr(model.model, "tfidf")
     assert hasattr(model.model, "W")
 
-def test_load_model_already_downloaded(tmpdir, manbyo_dict):
+def test_load_model_already_downloaded(tmpdir, manbyo_dict, monkeypatch):
     base_dir = tmpdir.mkdir("dnorm")
-    os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
+    monkeypatch.setenv("DEFAULT_CACHE_PATH", str(base_dir))
 
     model = DNormConverter(manbyo_dict)
     model = DNormConverter(manbyo_dict)
@@ -28,9 +28,9 @@ def test_load_model_already_downloaded(tmpdir, manbyo_dict):
     ("悪性リンパ腫だよおおおおお", "C859", "悪性リンパ腫"),
     ]
 )
-def test_dnorm_match(name, icd, norm, manbyo_dict, tmpdir):
+def test_dnorm_match(name, icd, norm, manbyo_dict, tmpdir, monkeypatch):
     base_dir = tmpdir.mkdir("dnorm")
-    os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
+    monkeypatch.setenv("DEFAULT_CACHE_PATH", str(base_dir))
 
     converter = DNormConverter(manbyo_dict)
 
