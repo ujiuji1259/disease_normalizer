@@ -18,7 +18,7 @@ pip install git+https://github.com/ujiuji1259/disease_normalizer.git
 
 ## 使用例
 ```python
-from disease_normalizer.normalizer import Normalizer
+from japanese_disease_normalizer.normalizer import Normalizer
 
 normalizer = Normalizer("abbr", "fuzzy")
 
