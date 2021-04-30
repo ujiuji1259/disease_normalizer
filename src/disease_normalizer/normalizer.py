@@ -10,7 +10,21 @@ BASE_URL = "http://aoi.naist.jp/norm/MANBYO_SABC.csv"
 
 class Normalizer(object):
     def __init__(self, preprocess_pipeline, converter):
+        # load preprocessor
+        if isinstance(preprocess_pipeline, PreprocessorPipeline):
+            self.preprocessor = preprocess_pipeline
+        elif isinstance(preprocess_pipeline, str):
+            if preprocess_pipeline == "basic":
+                self.preprocessor = PreprocessorPipeline(["NFKC", "fullwidth"])
+            else:
+                assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own converter inheriting BaseConverter"
+        else:
+            assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own preprocess pipeline instance"
+
         self.manbyo_dict = self.load_manbyo_dict()
+        for entry in self.manbyo_dict:
+            # 0番目を出現形として使用
+            entry.name = self.preprocessor.preprocess(entry.name)[0]
 
         # load converter
         if isinstance(converter, str):
@@ -25,16 +39,6 @@ class Normalizer(object):
         else:
             assert NotImplementedError, "Please specify converter by selecting (exact|fuzzy|dnorm) or creating your own converter inheriting BaseConverter"
 
-        # load preprocessor
-        if isinstance(preprocess_pipeline, PreprocessorPipeline):
-            self.preprocessor = preprocess_pipeline
-        elif isinstance(preprocess_pipeline, str):
-            if preprocess_pipeline == "basic":
-                self.preprocessor = PreprocessorPipeline(["fullwidth", "NFKC"])
-            else:
-                assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own converter inheriting BaseConverter"
-        else:
-            assert NotImplementedError, "Please specify converter by selecting (basic) or creating your own preprocess pipeline instance"
 
 
     def load_manbyo_dict(self):
@@ -51,5 +55,15 @@ class Normalizer(object):
         return manbyo_dict
 
 
-    def normalize(self, words):
-        pass
+    def normalize(self, word):
+        preprocessed_words = self.preprocessor.preprocess(word)
+        max_score = -float('inf')
+        max_word = None
+        for preprocessed_word in preprocessed_words:
+            result, sim = self.converter.convert(preprocessed_word)
+            if max_word is None or sim > max_score:
+                max_score = sim
+                max_word = result
+
+        return max_word
+

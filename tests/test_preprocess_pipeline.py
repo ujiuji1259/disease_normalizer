@@ -48,7 +48,8 @@ def test_load_preprocessor_from_own(pipelines, models):
         ("ｺﾝﾆﾁﾊ〜", ["identical"], ["ｺﾝﾆﾁﾊ〜"]),
         ("ｺﾝﾆﾁﾊ〜", ["fullwidth"], ["コンニチハ〜"]),
         ("ｺﾝﾆﾁﾊ〜", ["NFKC"], ["コンニチハー"]),
-        ("ｺﾝﾆﾁﾊ〜", ["fullwidth", "NFKC"], ["コンニチハー"]),
+        ("ｺﾝﾆﾁﾊ〜", ["NFKC", "fullwidth"], ["コンニチハー"]),
+        ("2型糖尿病", ["NFKC", "fullwidth"], ["２型糖尿病"]),
     ]
 )
 def test_preprocess(input, pipelines, outputs):

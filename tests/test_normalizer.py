@@ -15,7 +15,7 @@ def test_download_manbyo(tmpdir):
     base_dir = tmpdir.mkdir("norm")
     os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
 
-    model = Normalizer(None, "exact")
+    model = Normalizer("basic", "exact")
     assert (base_dir / "norm" / "MANBYO_SABC.csv").exists()
     assert hasattr(model, "manbyo_dict")
 
@@ -23,8 +23,8 @@ def test_manbyo_cache(tmpdir):
     base_dir = tmpdir.mkdir("norm")
     os.environ["DEFAULT_CACHE_PATH"] = str(base_dir)
 
-    model = Normalizer(None, "exact")
-    model = Normalizer(None, "exact")
+    model = Normalizer("basic", "exact")
+    model = Normalizer("basic", "exact")
     assert hasattr(model, "manbyo_dict")
 
 @pytest.mark.parametrize(
@@ -39,7 +39,7 @@ def test_load_model(name, model, mocker):
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
     mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
-    target_model = Normalizer(None, name)
+    target_model = Normalizer("basic", name)
     assert type(target_model.converter) == model
 
 
@@ -54,12 +54,12 @@ def test_load_own_model(mocker):
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
     mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
-    target_model = Normalizer(None, MyConverter())
+    target_model = Normalizer("basic", MyConverter())
     assert type(target_model.converter) == MyConverter
 
 @pytest.mark.parametrize(
     "name, models", [
-        ("basic", [FullWidthPreprocessor, NFKCPreprocessor])
+        ("basic", [NFKCPreprocessor, FullWidthPreprocessor])
     ]
 )
 def test_load_predefined_pipeline(name, models, mocker):
@@ -79,3 +79,17 @@ def test_load_own_pipeline(mocker):
 
     target_model = Normalizer(mypipeline, "exact")
     assert type(target_model.preprocessor) == PreprocessorPipeline
+
+
+@pytest.mark.parametrize(
+    "input, converter_name, preprocessor_name, output", [
+        ("2型糖尿病", "exact", "basic", DictEntry("２型糖尿病", "E11", "２型糖尿病", "S"))
+    ]
+)
+def test_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
+    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
+
+    target_model = Normalizer(preprocessor_name, converter_name)
+    result = target_model.normalize(input)
+    assert result.icd == output.icd
+    assert result.norm == output.norm
