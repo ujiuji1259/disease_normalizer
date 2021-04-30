@@ -1,3 +1,7 @@
+"""Disease normalizer
+
+Normalizer class normalizes disease names.
+"""
 import os
 from pathlib import Path
 
@@ -9,6 +13,12 @@ from .preprocessor.pipeline import PreprocessorPipeline
 BASE_URL = "http://aoi.naist.jp/norm/MANBYO_SABC.csv"
 
 class Normalizer(object):
+    """Normalizer
+
+    Args:
+        preprocess_pipeline Union[PreprocessorPipeline, str]: pipeline of preprocessor. You can use str (basic|abbr)
+        converter Union[BaseConverter, str]: converter for normalization. You can use str (exact|fuzzy|dnorm)
+    """
     def __init__(self, preprocess_pipeline, converter):
         # load preprocessor
         if isinstance(preprocess_pipeline, PreprocessorPipeline):
@@ -34,8 +44,9 @@ class Normalizer(object):
                 self.converter = exact_matcher.ExactMatchConverter(self.manbyo_dict)
             elif converter == "fuzzy":
                 self.converter = fuzzy_matcher.FuzzyMatchConverter(self.manbyo_dict)
-            else:
+            elif converter == "dnorm":
                 self.converter = dnorm.dnorm_converter.DNormConverter(self.manbyo_dict)
+            assert NotImplementedError, "Please specify converter by selecting (exact|fuzzy|dnorm)"
         elif isinstance(converter, BaseConverter):
             self.converter = converter
         else:
@@ -44,6 +55,11 @@ class Normalizer(object):
 
 
     def load_manbyo_dict(self):
+        """Load manbyo dict
+
+        This method create cache folder and download the manbyo dictionary.
+        You can specify cache folder by setting environment variable "DEFAULT_CACHE_PATH"
+        """
         DEFAULT_CACHE_PATH = os.getenv("DEFAULT_CACHE_PATH", "~/.cache")
         DEFAULT_MANBYO_PATH = Path(os.path.expanduser(
                         os.path.join(DEFAULT_CACHE_PATH, "norm")
@@ -58,6 +74,16 @@ class Normalizer(object):
 
 
     def normalize(self, word):
+        """Normalize disease name
+
+        We choose entry with maximum score if there are more than one entry that preprocessor creates (e.g. disambiguation of abbreviation expansion)
+
+        Args:
+            word str: target disease name
+
+        Returns:
+            DictEntry: linked entry of input disease name
+        """
         preprocessed_words = self.preprocessor.preprocess(word)
         max_score = -float('inf')
         max_word = None

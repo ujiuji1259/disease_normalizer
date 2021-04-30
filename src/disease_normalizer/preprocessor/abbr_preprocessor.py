@@ -1,3 +1,7 @@
+"""Abbreviation Preprocessor
+
+This module expands abbreviation by using abbreviation dictionary.
+"""
 import os
 import re
 import json
@@ -13,16 +17,39 @@ BASE_URL = "http://aoi.naist.jp/norm/abb_dic.json"
 
 @dataclass
 class AbbrEntry:
+    """Data of abbreviation
+
+    Attributes:
+        abbr str: abbreviation
+        name str: disease name expanded
+        freq int: frequency of disease name in case reports
+    """
     abbr: str
     name: str
     freq: int
 
 
 class AbbrPreprocessor(BasePreprocessor):
+    """Abbreviation prerpocessor
+
+    Attributes:
+        abbr_dict Dict[List[AbbrEntry]]: entry of abbriviation
+    """
     def __init__(self):
         self.abbr_dict = self.load_abbr_dict()
 
     def preprocess(self, word):
+        """Expand abbreviation
+
+        Because of the ambiguation of abbreviation, we return all of the expanded forms of the abbreviation.
+        All expanded forms will be scored by the converter and choose one with muximum score.
+
+        Args:
+            word str: disease name
+
+        Returns:
+            List[str]: all possible names
+        """
         word = jaconv.z2h(word, kana=False, ascii=True, digit=True)
         iters = re.finditer(r'([a-zA-Z][a-zA-Z\s]*)', word)
 
@@ -63,6 +90,15 @@ class AbbrPreprocessor(BasePreprocessor):
         return results
 
     def load_abbr_dict(self):
+        """Load abbreviation dictionary
+
+        Load dnorm model from ~/.cache/norm/abb_dict.json if the path exists.
+        Otherwise, automatically download the dnorm file from remote-url.
+        You can specify the cache directory by setting the environment variable "DEFAULT_CACHE_PATH"
+
+        Returns:
+            Dict[str, List[AbbrEntry]]: abbreviation dictionary that will be used in preprocess.
+        """
         DEFAULT_CACHE_PATH = os.getenv("DEFAULT_CACHE_PATH", "~/.cache")
         DEFAULT_ABBR_PATH = Path(os.path.expanduser(
                 os.path.join(DEFAULT_CACHE_PATH, "norm")
