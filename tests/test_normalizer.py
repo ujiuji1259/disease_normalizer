@@ -36,7 +36,7 @@ def test_manbyo_cache(tmpdir):
 )
 def test_load_model(name, model, mocker):
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
     target_model = Normalizer("basic", name)
     assert type(target_model.converter) == model
@@ -51,7 +51,7 @@ def test_load_own_model(mocker):
             return word
 
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
     target_model = Normalizer("basic", MyConverter())
     assert type(target_model.converter) == MyConverter
@@ -63,7 +63,7 @@ def test_load_own_model(mocker):
 )
 def test_load_predefined_pipeline(name, models, mocker):
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
     target_model = Normalizer(name, "exact")
     for pipeline, model in zip(target_model.preprocessor.pipelines, models):
@@ -72,7 +72,7 @@ def test_load_predefined_pipeline(name, models, mocker):
 
 def test_load_own_pipeline(mocker):
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
     mypipeline = PreprocessorPipeline(['identical'])
 
@@ -88,7 +88,7 @@ def test_load_own_pipeline(mocker):
     ]
 )
 def test_basic_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
 
     target_model = Normalizer(preprocessor_name, converter_name)
     result = target_model.normalize(input)
@@ -102,14 +102,13 @@ def test_basic_normalize(input, converter_name, preprocessor_name, output, manby
     ]
 )
 def test_abbr_normalize(input, converter_name, preprocessor_name, output, manbyo_dict, mocker):
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=manbyo_dict)
 
     target_model = Normalizer(preprocessor_name, converter_name)
     result = target_model.normalize(input)
     assert result.icd == output.icd
     assert result.norm == output.norm
 
-"""
 
 @pytest.mark.parametrize(
     "preprocessor_name, converter_name", [
@@ -121,9 +120,7 @@ def test_abbr_normalize(input, converter_name, preprocessor_name, output, manbyo
 )
 def test_invalid_args(preprocessor_name, converter_name, mocker):
     mock_dic = [DictEntry("こんにちは", None, "こんにちは", None) for i in range(10)]
-    mocker.patch("disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
+    mocker.patch("japanese_disease_normalizer.normalizer.Normalizer.load_manbyo_dict", return_value=mock_dic)
 
     with pytest.raises(NotImplementedError):
         target_model = Normalizer(preprocessor_name, converter_name)
-
-"""
