@@ -13,6 +13,8 @@ pip install git+https://github.com/ujiuji1259/disease_normalizer.git
 万病辞書との完全一致で標準病名に紐付けます。  
 - Fuzzy Match  
 [simstring](http://www.chokkan.org/software/simstring/index.html.ja)による曖昧一致を行います。文字単位の2-gramによるコサイン類似度により類似度を計算します。
+- DNorm  
+古典的な病名正規化手法である[DNorm](http://dx.doi.org/10.1093/bioinformatics/btt474)を用いて病名を名寄せします。Tf-idfベースのランキング学習手法です。
 
 ## 使用例
 ```python
