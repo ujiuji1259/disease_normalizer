@@ -4,7 +4,7 @@ Normalizer class normalizes disease names.
 """
 import os
 from pathlib import Path
-from logging import getLogger
+from logging import getLogger, NullHandler
 
 from . import utils
 from .converter import exact_matcher, fuzzy_matcher
@@ -15,6 +15,7 @@ from .preprocessor.pipeline import PreprocessorPipeline
 BASE_URL = "http://aoi.naist.jp/norm/MANBYO_SABC.csv"
 
 default_logger = getLogger(__name__)
+default_logger.addHandler(NullHandler())
 
 class Normalizer(object):
     """Normalizer
