@@ -26,6 +26,26 @@ input_disease = "AML"
 normalized_term = normalizer.normalize(input_disease)
 ```
 
+## Spacy extension
+spacyのパイプラインに加えることで，固有表現（ここでは病名）に正規化結果の`DictEntry`を付与することができます．  
+日本語モデル（`spacy.lang.ja.Japanese`）を元にした病名認識パイプラインを公開していますので，そちらもご利用ください．
+### 使用例
+```python
+import spacy
+from japanese_disease_normalizer.spacy_extension import ManbyoNormalizer
+
+nlp = spacy.load("/path/to/model_for_disease_recognition")
+nlp.add_pipe("manbyo_normalizer")
+
+text = "急性骨髄性白血病により緊急入院"
+doc = nlp(text)
+for ent in doc.ents:
+  print(ent._.norm)
+```
+
+### 結果
+`DictEntry(name="急性骨髄性白血病", icd="C920", norm="急性骨髄性白血病", level="S")`
+
 ## 略語展開例
 
 `>>> normalizer.normalize("高K血症")`  
