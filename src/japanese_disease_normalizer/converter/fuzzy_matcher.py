@@ -45,6 +45,6 @@ class FuzzyMatchConverter(BaseConverter):
         results = self.searcher.ranked_search(word, alpha)
         if len(results) != 0:
             # results = [(sim, word), ...]
-            return self.dict[results[0][1]], -results[0][0]
+            return self.dict[results[0][1]], results[0][0]
         return utils.DictEntry(None, None, None, None), -float('inf')
 
